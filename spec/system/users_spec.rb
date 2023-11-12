@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "Users", type: :system do
-  let(:user) { build(:user) }
+  let(:user) { create(:user) }
   before do
     driven_by(:rack_test)
     visit new_user_registration_path
@@ -10,7 +10,7 @@ RSpec.describe "Users", type: :system do
   describe "新規登録" do
     context "成功する場合" do
       before do
-        fill_in "user_email", with: user.email
+        fill_in "user_email", with: "test2@email"
         fill_in "user_nickname", with: user.nickname
         fill_in "user_password", with: user.password
         fill_in "user_password_confirmation", with: user.password_confirmation
@@ -44,6 +44,33 @@ RSpec.describe "Users", type: :system do
         it "エラーメッセージが表示される" do
           expect(page).to have_content"Nickname is too long (maximum is 20 characters)"
         end
+      end
+    end
+  end
+
+  describe "ログイン" do
+    context "成功する場合" do
+      before do
+        visit new_user_session_path
+        fill_in 'user_email', with: user.email
+        fill_in 'user_password', with: user.password
+        click_button 'ログイン'
+      end
+
+      it "ログインする" do
+        expect(page).to have_content "Signed in successfully."
+      end
+    end
+    context "成功する場合" do
+      before do
+        visit new_user_session_path
+        fill_in 'user_email', with: ""
+        fill_in 'user_password', with: ""
+        click_button 'ログイン'
+      end
+
+      it "ログインできない" do
+        expect(page).to have_content "Invalid Email or password"
       end
     end
   end
