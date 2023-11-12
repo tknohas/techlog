@@ -28,8 +28,8 @@ RSpec.describe 'Homes', type: :system do
     end
 
     context 'ログインしている場合' do
+      let(:user) { create(:user) } # ログイン用のユーザーを作成
       before do
-        user = create(:user) # ログイン用のユーザーを作成
         sign_in user # 作成したユーザーでログイン
         visit '/'
       end
