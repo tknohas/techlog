@@ -14,19 +14,19 @@ RSpec.describe User, type: :model do
   it "名前がなければ無効な状態であること" do
     user.nickname = nil
     user.valid?
-    expect(user.errors[:nickname]).to include("can't be blank")
+    expect(user.errors[:nickname]).to include("が入力されていません。")
   end
 
   it "メールアドレスがなければ無効な状態であること" do
     user.email = nil
     user.valid?
-    expect(user.errors[:email]).to include("can't be blank")
+    expect(user.errors[:email]).to include("が入力されていません。")
   end
 
   it "パスワードがなければ無効な状態であること" do
     user.password = nil
     user.valid?
-    expect(user.errors[:password]).to include("can't be blank")
+    expect(user.errors[:password]).to include("が入力されていません。")
   end
 
   describe '文字数制限の検証' do
@@ -42,7 +42,7 @@ RSpec.describe User, type: :model do
         user.valid?
 
         expect(user.valid?).to be(false)
-        expect(user.errors[:nickname]).to include('is too long (maximum is 20 characters)')
+        expect(user.errors[:nickname]).to include('は20文字以下に設定して下さい。')
       end
     end
   end

@@ -30,7 +30,7 @@ RSpec.describe "Users", type: :system do
           click_on "ユーザー登録"
         end
         it "エラーメッセージが表示される" do
-          expect(page).to have_content"3 errors prohibited this user from being saved:"
+          expect(page).to have_content"が入力されていません。"
         end
       end
       context "文字数" do
@@ -42,7 +42,7 @@ RSpec.describe "Users", type: :system do
           click_on "ユーザー登録"
         end
         it "エラーメッセージが表示される" do
-          expect(page).to have_content"Nickname is too long (maximum is 20 characters)"
+          expect(page).to have_content"ニックネームは20文字以下に設定して下さい。"
         end
       end
     end
@@ -58,10 +58,14 @@ RSpec.describe "Users", type: :system do
       end
 
       it "ログインする" do
-        expect(page).to have_content "Signed in successfully."
+        expect(page).to have_content "ログインしました"
+      end
+      it "ログアウトする" do
+        click_on "ログアウト"
+        expect(page).to have_content "ログアウトしました"
       end
     end
-    context "成功する場合" do
+    context "失敗する場合" do
       before do
         visit new_user_session_path
         fill_in 'user_email', with: ""
@@ -70,7 +74,7 @@ RSpec.describe "Users", type: :system do
       end
 
       it "ログインできない" do
-        expect(page).to have_content "Invalid Email or password"
+        expect(page).to have_content "メールアドレスまたはパスワードが違います"
       end
     end
   end
