@@ -12,9 +12,8 @@
   </head>
 
   <body>
+    <%= render 'shared/flash' %>
     <main class="container mx-auto mt-20 py-8 px-5 flex items-center justify-center">
-      <p class="notice"><%= notice %></p>
-      <p class="alert"><%= alert %></p>
       <%= yield %>
     </main>
   </body>
