@@ -17,7 +17,7 @@ RSpec.describe "Users", type: :system do
         click_on "ユーザー登録"
       end
       it "登録する" do
-        expect(page).to have_content "Welcome! You have signed up successfully."
+        expect(page).to have_content "ユーザー登録に成功しました。"
       end
     end
     context "失敗する" do
@@ -35,14 +35,14 @@ RSpec.describe "Users", type: :system do
       end
       context "文字数" do
         before do
-          fill_in "user_email", with: user.email
+          fill_in "user_email", with: "www@www.com"
           fill_in "user_nickname", with: "っっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっq"
           fill_in "user_password", with: user.password
           fill_in "user_password_confirmation", with: user.password_confirmation
           click_on "ユーザー登録"
         end
         it "エラーメッセージが表示される" do
-          expect(page).to have_content"ニックネームは20文字以下に設定して下さい。"
+          expect(page).to have_content"ニックネーム は20文字以下に設定して下さい。"
         end
       end
     end

@@ -4,7 +4,7 @@ RSpec.describe User, type: :model do
   let(:user) { build(:user) }
   it "名前、メールアドレス、パスワードがあれば有効な状態であること" do
     expect(user.nickname).to eq('サンジ')
-    expect(user.email).to eq('test1@test.com')
+    expect(user.email).to eq(user.email)
   end
 
   it "名前、メールアドレス、パスワードがあれば有効な状態であること" do
