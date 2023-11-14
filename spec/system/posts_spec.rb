@@ -8,7 +8,6 @@ RSpec.describe "Posts", type: :system do
   end
 
   describe "ログ投稿機能" do
-    
     context "ログインしていない場合" do
       it "ログインページへリダイレクトされる" do
         visit new_post_path
@@ -40,6 +39,16 @@ RSpec.describe "Posts", type: :system do
         expect(page).to have_content('投稿に失敗しました')
       end
     end
+  end
 
+  describe "ログ詳細機能の検証" do
+    before do
+      visit post_path(post.id)
+    end
+      it "詳細が表示される" do
+        expect(page).to have_content post.title
+        expect(page).to have_content post.content
+        expect(page).to have_content user.nickname
+      end
   end
 end
