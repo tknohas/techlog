@@ -7,8 +7,12 @@ RSpec.describe "Posts", type: :request do
   describe "GET /new" do
     context "ログインしていない場合" do
       it "ログインページにリダイレクトされる" do
-        get "/posts/new"
+        get new_post_path
         expect(response).to redirect_to '/users/sign_in'
+      end
+      it 'HTTPステータス302を返す' do
+        get new_post_path
+        expect(response).to have_http_status(302)
       end
     end
 
@@ -19,7 +23,7 @@ RSpec.describe "Posts", type: :request do
         expect(response).to_not redirect_to '/users/sign_in'
       end
       it 'HTTPステータス200を返す' do
-        get '/posts/new'
+        get new_post_path
         expect(response).to have_http_status(200)
       end
     end
@@ -36,6 +40,22 @@ RSpec.describe "Posts", type: :request do
       it 'HTTPステータス200を返す' do
         sign_in user
         get post_path(post.id)
+        expect(response).to have_http_status '200'
+      end
+    end
+  end
+
+  describe 'GET /posts' do
+    context 'ログインしていない場合' do
+      it 'HTTPステータス200を返す' do
+        get posts_path
+        expect(response).to have_http_status '200'
+      end
+    end
+    context 'ログインしている場合' do
+      it 'HTTPステータス200を返す' do
+        sign_in user
+        get posts_path
         expect(response).to have_http_status '200'
       end
     end

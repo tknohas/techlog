@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe "Posts", type: :system do
   let(:user) { create(:user) }
-  let!(:post) { create(:post) }
+  let!(:post) { create(:post, user_id: user.id) }
+  let(:post1) { create(:post, user_id: user.id) }
   before do
     driven_by(:rack_test)
   end
@@ -29,6 +30,7 @@ RSpec.describe "Posts", type: :system do
         fill_in 'post_content', with: post.content
         click_on 'ログを記録'
         expect(page).to have_content('投稿しました')
+        expect(current_path).to eq posts_path
       end
       it 'Postを作成できない' do
         visit new_post_path
@@ -50,5 +52,25 @@ RSpec.describe "Posts", type: :system do
         expect(page).to have_content post.content
         expect(page).to have_content user.nickname
       end
+  end
+
+  describe "ログ一覧機能の検証" do
+    before do
+      visit posts_path
+    end
+    it '1件目のPostの詳細が表示される' do
+      expect(page).to have_content post.title
+      expect(page).to have_content post.content
+      expect(page).to have_content user.nickname
+    end
+    it '2件目のPostの詳細が表示される' do
+      expect(page).to have_content post1.title
+      expect(page).to have_content post1.content
+      expect(page).to have_content user.nickname
+    end
+    it '投稿タイトルをクリックすると詳細ページへ遷移すること' do
+      click_on post.title
+      expect(current_path).to eq post_path(post.id)
+    end
   end
 end
