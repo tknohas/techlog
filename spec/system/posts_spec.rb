@@ -73,4 +73,31 @@ RSpec.describe "Posts", type: :system do
       expect(current_path).to eq post_path(post.id)
     end
   end
+
+  describe "ログ削除機能の検証" do
+    context "投稿したユーザーでログインしている場合" do
+      before do
+        sign_in user
+        visit post_path(post.id)
+      end
+      it '削除ボタンが表示される' do
+        expect(page).to have_button '削除'
+      end
+      it '投稿を削除できること' do
+        click_on '削除'
+        expect(current_path).to eq posts_path
+        expect(page).to have_content '投稿が削除されました'
+        expect(page).to_not have_link post_path(post.id)
+      end
+    end
+
+    context "投稿したユーザーでログインしていない場合" do
+      before do
+        visit post_path(post.id)
+      end
+      it '削除ボタンが表示されない' do
+        expect(page).to_not have_button '削除'
+      end
+    end
+  end
 end
